@@ -764,10 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const atStart = sc.scrollLeft <= 2;
       const atEnd = Math.ceil(sc.scrollLeft + sc.clientWidth) >= sc.scrollWidth - 2;
-      prev.style.pointerEvents
-
-
-        = atStart ? 'none' : '';
+      prev.style.pointerEvents = atStart ? 'none' : '';
       next.style.pointerEvents = atEnd ? 'none' : '';
     };
 
@@ -787,17 +784,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const toggle = (el, expand) => {
       const card = el.closest('.testimonials__slide');
+      if (!card) return;
+
       if (expand) {
         document.querySelectorAll('.testimonials__text--expanded').forEach(o => o !== el && toggle(o, false));
+        
+        const startH = el.offsetHeight;
         el.innerHTML = el.dataset.fullText + ' <span class="text-violet-more">скрыть</span>';
         el.classList.add('testimonials__text--expanded');
-        card?.classList.add('testimonials__slide--expanded');
+        card.classList.add('testimonials__slide--expanded');
+        const endH = el.scrollHeight;
+
+        el.style.height = startH + 'px';
+        requestAnimationFrame(() => {
+          el.style.height = endH + 'px';
+        });
+
+        const onEnd = () => {
+          el.style.height = '';
+          el.removeEventListener('transitionend', onEnd);
+        };
+        el.addEventListener('transitionend', onEnd);
+
       } else {
         if (!el.dataset.fullText) return;
+
+        const startH = el.offsetHeight;
+        el.style.height = startH + 'px';
         trunc(el);
         el.classList.remove('testimonials__text--expanded');
-        card?.classList.remove('testimonials__slide--expanded');
+        card.classList.remove('testimonials__slide--expanded');
+        const endH = el.scrollHeight;
+
+        requestAnimationFrame(() => {
+          el.style.height = endH + 'px';
+        });
+
+        const onEnd = () => {
+          el.style.height = '';
+          el.removeEventListener('transitionend', onEnd);
+        };
+        el.addEventListener('transitionend', onEnd);
       }
+
       el.dataset.expanded = expand ? 'true' : 'false';
       requestAnimationFrame(updateArrows);
     };
