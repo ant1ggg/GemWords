@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
-    -tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
 }
 
 html {
@@ -1555,7 +1555,7 @@ main {
 }
 
 .testimonials__slide--expanded {
-    height: auto;
+    height: auto !important;
     min-height: 240px;
 }
 
@@ -1611,13 +1611,11 @@ main {
     overflow: hidden;
     margin: 0;
     position: relative;
-    transition: all .3 ease;
 }
 
 .testimonials__text--expanded {
     height: auto !important;
     overflow: visible;
-    transition: all .3s ease;
 }
 
 .testimonials__slide--short .testimonials__text {
@@ -3320,7 +3318,7 @@ main {
     .testimonials__slide {
         max-width: none;
         width: calc((100% - 12px) / 2);
-        min-height: 288px;
+        height: 288px;
         padding: 24px 32px;
     }
 
